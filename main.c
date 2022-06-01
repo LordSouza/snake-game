@@ -47,7 +47,7 @@ void draw() {
 
   // Print the score after the
   // game ends
-  printf("score = %d", score);
+  printf("pontos = %d", score);
   printf("\n");
   printf("press X to quit the game");
 }
@@ -78,7 +78,7 @@ void input() {
 // Function for the logic behind
 // each movement
 void logic() {
-  sleep(0.01);
+  usleep(100000);
   switch (flag) {
   case 1:
     y--;
@@ -122,9 +122,6 @@ void logic() {
 
 // função principal
 int main() {
-  char c;
-  int play = 1;
-
   // fruta aparece em lugar aleatorio, dentro do campo
   // // aparecer fruta em lugar vazio
   // // se cobra comer fruta
