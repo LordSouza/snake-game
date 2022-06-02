@@ -6,38 +6,72 @@
 #include <unistd.h>
 
 //////////////////////////////////////////////
-int i, j, height = 30;
-int width = 30, gameover, score;
-int x, y, fruitx, fruity, flag, gameover, score;
-
+// declaracao das variaveis dos loops
+int i, j;
+/*
+declaracao das variaveis que desenham o mapa
+-> altura = tamanho da altura do campo
+-> largura = tamanho da largura do campo
+OBS: tem q ser do mesmo tamanho
+*/
+int altura = 30, largura = 30 ;
+/*
+declaracao das varias prncipais para funcionamento do jogo
+-> fim_de_jogo = checa se o jogo terminou, seja por morte da snake, ou ao clicar a tecla "x"
+-> pontuacao = soma 10 cada vez q a snake encosta na fruta
+-> flag = controla a direcao que a cobra se move
+*/
+int fim_de_jogo, pontuacao,flag;
+/*
+declaracao de variaveis para posicao dos objetos
+-> x = valor do eixo x da snake inicial
+-> y = valor do eixo y da snake inicial
+-> fruitx = valor do eixo x da fruta inicial
+-> fruity = valor do eixo y da fruta inicial
+*/
+int x, y, fruitx, fruity;
+/*
+funcao do type void(nao retorna valor)
+coloca valor inicial para a snake e a fruta ao comecar o jogo
+*/
 void setup() {
-  gameover = 0;
-  x = height / 2;
-  y = width / 2;
+  // coloca o valor do fim_de_jogo = 0, para "false", se fim_de jogo = 1, e igual a "true"
+  fim_de_jogo = 0;
+  // x recebe o valor inicial para a posicao da snake
+  x = largura / 2;
+  // y receve o valor inicial para a posicao da snake
+  y = altura / 2;
+// GOTO da linguagem C, e utilizado para definir o valor de fruitx e fruity para definir a posicao da fruta
 label1:
+  // coloca um valor aleatorio para fruitx
   fruitx = rand() % 20;
+  // se fruitx == 0, recomeca o GOTO label1 e tenta conseguir um valor valido
   if (fruitx == 0) {
     goto label1;
   }
+// definicao da posicao fruity
 label2:
+  // coloca um valor aleatorio da fruity
   fruity = rand() % 20;
+  // se fruity == 0, recomeca o GOTO e tenta conseguir um valor valido
   if (fruity == 0) {
     goto label2;
   }
-  score = 0;
+  // coloca a potuacao como 0 para inicio de um jogo novo
+  pontuacao = 0;
 }
 
 void draw() {
   system("clear");
-  for (i = 0; i < height; i++) {
-    for (j = 0; j < width; j++) {
-      if (i == 0 || i == width - 1 || j == 0 || j == height - 1) {
-        printf("#");
+  for (i = 0; i < largura; i++) {
+    for (j = 0; j < altura; j++) {
+      if (i == 0 || i == altura - 1 || j == 0 || j == largura - 1) {
+        printf("!");
       } else {
         if (i == x && j == y)
-          printf("0");
+          printf("o");
         else if (i == fruitx && j == fruity)
-          printf("*");
+          printf("&");
         else
           printf(" ");
       }
@@ -45,11 +79,11 @@ void draw() {
     printf("\n");
   }
 
-  // Print the score after the
+  // Print the pontuacao after the
   // game ends
-  printf("pontos = %d", score);
+  printf("pontos = %d", pontuacao);
   printf("\n");
-  printf("press X to quit the game");
+  printf("clique X para sair do jogo");
 }
 
 // Function to take the input
@@ -69,7 +103,7 @@ void input() {
       flag = 4;
       break;
     case 'x':
-      gameover = 1;
+      fim_de_jogo = 1;
       break;
     }
   }
@@ -78,7 +112,7 @@ void input() {
 // Function for the logic behind
 // each movement
 void logic() {
-  usleep(100000);
+  usleep(300000);
   switch (flag) {
   case 1:
     y--;
@@ -97,11 +131,11 @@ void logic() {
   }
 
   // If the game is over
-  if (x < 0 || x > height || y < 0 || y > width)
-    gameover = 1;
+  if (x < 0 || x > largura || y < 0 || y > altura)
+    fim_de_jogo = 1;
 
   // If snake reaches the fruit
-  // then update the score
+  // then update the pontuacao
   if (x == fruitx && y == fruity) {
   label3:
     fruitx = rand() % 20;
@@ -114,7 +148,7 @@ void logic() {
     fruity = rand() % 20;
     if (fruity == 0)
       goto label4;
-    score += 10;
+    pontuacao += 10;
   }
 }
 
@@ -132,8 +166,8 @@ int main() {
   // // // aumentar tamanho e velocidade ao comer fruta
   // // cobra cresce(se comer fruta)
   // // cobra morre com contato alem da fruta
-  // check gameover
-  // // se gameover acaba o jogo
+  // check fim_de_jogo
+  // // se fim_de_jogo acaba o jogo
   // // vai para o menu de recomeco
   // recomecar o jogo caso a pessoa queira
   // // sim ou nao
@@ -149,7 +183,7 @@ int main() {
   //   draw();
   //   input();
   //   logic();
-  // } while (!gameover);
+  // } while (!fim_de_jogo);
 
   int m, n;
 
@@ -157,12 +191,12 @@ int main() {
   setup();
 
   // Until the game is over
-  while (!gameover) {
+  while (!fim_de_jogo) {
 
     // Function Call
-    draw();
     input();
     logic();
+    draw();
   }
 
   return 0;
