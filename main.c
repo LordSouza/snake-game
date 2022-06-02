@@ -49,11 +49,11 @@ void setup() {
 label1:
   // coloca um valor aleatorio para fruitx dentro do limite do campo(0:30), ou
   // seja, 1:29
-  fruitx = rand() % ((28 - 1 + 1) + 1);
-  fruity = rand() % ((28 - 1 + 1) + 1);
+  fruitx = rand() % (29);
+  fruity = rand() % (29);
   // se fruitx == x, recomeca o GOTO label1 e tenta conseguir um valor valido
   // para nao aparecer em cima da snake
-  if ((fruitx == x) && (fruity == y)) {
+  if ((fruitx == x) && (fruity == y) || (fruitx == 0) || (fruity == 0)) {
     // caso positivo, recomeca e tenta pegar outros valores
     goto label1;
   }
@@ -171,7 +171,7 @@ void logic() {
   }
 
   // se o jogo terminou, pela snake tocando as bordas
-  if (x < 1 || x > largura - 1 || y < 1 || y > altura - 1)
+  if (x < 1 || x > largura - 2 || y < 1 || y > altura - 2)
     // colocar fim_de_jogo para 1
     fim_de_jogo = 1;
 
@@ -180,14 +180,12 @@ void logic() {
   */
   if (x == fruitx && y == fruity) {
   label3:
-    fruitx = rand() % 20;
-    if (fruitx == 0)
+    fruitx = rand() % (29);
+    fruity = rand() % (29);
+    if ((fruitx == x) && (fruity == y) || (fruitx == 0) || (fruity == 0)) {
+      // caso positivo, recomeca e tenta pegar outros valores
       goto label3;
-
-  label4:
-    fruity = rand() % 20;
-    if (fruity == 0)
-      goto label4;
+    }
     // aumento da pontuacao por 10 depois que a cobra encostar na fruta
     pontuacao += 10;
   }
